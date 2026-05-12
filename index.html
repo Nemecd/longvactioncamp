@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SU Camp Registration</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="hdr">
+      <span class="hdr-cross">✝ ✝ ✝</span>
+      <h1>Scripture Union Emene Zone<br />Youth & Children Camp 2026</h1>
+      <p>August 4th – 9th, 2026 · Registration Portal</p>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="showView('register')">
+        Register
+      </button>
+      <button class="tab" onclick="showView('admin-gate')">Admin Panel</button>
+    </div>
+
+    <div class="view active" id="view-register">
+      <div class="card">
+        <div class="ctitle">Participant Registration Form</div>
+        <div id="reg-alert"></div>
+        <div class="fgrid">
+          <div class="fg full">
+            <label>Full Name *</label
+            ><input
+              type="text"
+              id="r-name"
+              placeholder="e.g. Chukwuemeka Obi"
+            />
+          </div>
+          <div class="fg">
+            <label>Gender *</label
+            ><select id="r-gender">
+              <option value="">Select gender</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Phone Number *</label
+            ><input type="tel" id="r-phone" placeholder="080xxxxxxxx" />
+          </div>
+          <div class="fg full">
+            <label>Email Address *</label
+            ><input type="email" id="r-email" placeholder="you@example.com" />
+          </div>
+          <div class="fg">
+            <label>Group *</label
+            ><select id="r-group">
+              <option value="">Select group</option>
+              <option>Group A</option>
+              <option>Group B</option>
+              <option>Group C</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Category *</label
+            ><select id="r-category" onchange="catChange()">
+              <option value="">Select category</option>
+              <option value="Adult">Adult — ₦2,500</option>
+              <option value="Youth">Youth — ₦2,000</option>
+              <option value="Children">Children — ₦1,500</option>
+            </select>
+          </div>
+          <div class="fg cond" id="f-school">
+            <label>School Name *</label
+            ><input type="text" id="r-school" placeholder="School name" />
+          </div>
+          <div class="fg cond" id="f-class">
+            <label>Class / Level *</label
+            ><input
+              type="text"
+              id="r-class"
+              placeholder="e.g. SS2, Primary 4"
+            />
+          </div>
+          <div class="fg cond full" id="f-gname">
+            <label>Guardian's Full Name *</label
+            ><input
+              type="text"
+              id="r-gname"
+              placeholder="Parent or guardian's name"
+            />
+          </div>
+          <div class="fg cond" id="f-gphone">
+            <label>Guardian's Phone *</label
+            ><input
+              type="tel"
+              id="r-gphone"
+              placeholder="Guardian phone number"
+            />
+          </div>
+        </div>
+        <div class="fnote" id="fee-def">
+          <h4>Registration Fees</h4>
+          <div class="frow">
+            <span>Adult</span><span class="amt">₦2,500</span>
+          </div>
+          <div class="frow">
+            <span>Youth</span><span class="amt">₦2,000</span>
+          </div>
+          <div class="frow">
+            <span>Children</span><span class="amt">₦1,500</span>
+          </div>
+          <div class="abox">
+            <div class="anum">4110188217</div>
+            <div class="aname">
+              Fidelity Bank · Scripture Union Nig Emene Zone Youth
+            </div>
+          </div>
+        </div>
+        <div class="fnote" id="fee-sel" style="display: none">
+          <h4>Your Registration Fee</h4>
+          <div class="frow">
+            <span id="fcat">Category</span><span class="amt" id="famt">₦0</span>
+          </div>
+          <div class="abox">
+            <div class="anum">4110188217</div>
+            <div class="aname">
+              Fidelity Bank · Scripture Union Nig Emene Zone Youth
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 1.25rem">
+          <label
+            style="
+              display: block;
+              margin-bottom: 0.5rem;
+              font-size: 0.78rem;
+              font-weight: 500;
+              color: var(--mu);
+              text-transform: uppercase;
+              letter-spacing: 0.05em;
+            "
+            >Proof of Payment *</label
+          >
+          <div
+            class="upzone"
+            onclick="document.getElementById('pfile').click()"
+          >
+            <input
+              type="file"
+              id="pfile"
+              accept="image/*,.pdf"
+              onchange="fileSelect(this)"
+            />
+            <span class="uico">⬆</span>
+            <p>Tap to upload your payment receipt</p>
+            <span>JPG, PNG or PDF · max 5MB</span>
+          </div>
+          <div class="upprev" id="upprev">
+            <span>📎</span><span id="pfname"></span>
+            <button class="rmfile" onclick="rmFile()">✕</button>
+          </div>
+        </div>
+        <button class="btn btnp" onclick="submitReg()" id="reg-btn">
+          Submit Registration
+        </button>
+      </div>
+    </div>
+
+    <div class="view" id="view-admin-gate">
+      <div class="lwrap">
+        <div class="card">
+          <div class="ctitle">Admin Login</div>
+          <div id="login-alert"></div>
+          <div class="fg" style="margin-bottom: 1rem">
+            <label>Password</label
+            ><input
+              type="password"
+              id="admin-pass"
+              placeholder="Enter admin password"
+              onkeydown="if (event.key === 'Enter') adminLogin();"
+            />
+          </div>
+          <button class="btn btnp" onclick="adminLogin()">Login</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="view-admin">
+      <div id="admin-alert"></div>
+      <div class="srow">
+        <div class="sc">
+          <div class="snum" id="st-total">—</div>
+          <div class="slbl">Total</div>
+        </div>
+        <div class="sc">
+          <div class="snum" id="st-pending">—</div>
+          <div class="slbl">Pending</div>
+        </div>
+        <div class="sc">
+          <div class="snum" id="st-confirmed">—</div>
+          <div class="slbl">Confirmed</div>
+        </div>
+        <div class="sc">
+          <div class="snum" id="st-revenue">—</div>
+          <div class="slbl">Revenue</div>
+        </div>
+        <button class="fbtn" onclick="downloadCSV()" style="background:var(--g7);color:#fff;border-color:var(--g7)">↓ Download CSV</button>
+      </div>
+      <div class="frow2">
+        <button class="fbtn active" onclick="setFilter('all', this)">
+          All
+        </button>
+        <button class="fbtn" onclick="setFilter('pending', this)">
+          Pending
+        </button>
+        <button class="fbtn" onclick="setFilter('confirmed', this)">
+          Confirmed
+        </button>
+        <button class="fbtn" onclick="setFilter('rejected', this)">
+          Rejected
+        </button>
+        <button class="fref" onclick="loadRegs()">↻ Refresh</button>
+      </div>
+      <div id="reg-list"><div class="empty">Loading...</div></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
