@@ -8,9 +8,10 @@
   </head>
   <body>
     <div class="hdr">
-      <span class="hdr-cross">✝ ✝ ✝</span>
+      <!-- <span class="hdr-cross">✝ ✝ ✝</span> -->
+       <img src="img/su.jfif" alt="SU Emene Zone Logo" height="50" width="50" />
       <h1>Scripture Union Emene Zone<br />Youth & Children Camp 2026</h1>
-      <p>August 4th – 9th, 2026 · Registration Portal</p>
+      <p>August 6th – 10th, 2026 · Registration Portal</p>
     </div>
     <div class="tabs">
       <button class="tab active" onclick="showView('register')">
@@ -52,17 +53,24 @@
             <label>Group *</label
             ><select id="r-group">
               <option value="">Select group</option>
-              <option>Group A</option>
-              <option>Group B</option>
-              <option>Group C</option>
+              <option>Akpuoga</option>
+              <option>Emene 1</option>
+              <option>Emene 2</option>
+              <option>Emene 3</option>
+              <option>Emene 4</option>
+              <option>Emene 5</option>
+              <option>Destiny Layout</option>
+              <option>Nchatancha</option>
+              <option>Sunrise</option>
+              <option>Sunrise Estate</option>
             </select>
           </div>
           <div class="fg">
             <label>Category *</label
             ><select id="r-category" onchange="catChange()">
               <option value="">Select category</option>
-              <option value="Adult">Adult — ₦2,500</option>
-              <option value="Youth">Youth — ₦2,000</option>
+              <option value="Adult">Adult — ₦3,000</option>
+              <option value="Youth">Youth — ₦3,000</option>
               <option value="Children">Children — ₦1,500</option>
             </select>
           </div>
@@ -98,10 +106,10 @@
         <div class="fnote" id="fee-def">
           <h4>Registration Fees</h4>
           <div class="frow">
-            <span>Adult</span><span class="amt">₦2,500</span>
+            <span>Adult</span><span class="amt">₦3000</span>
           </div>
           <div class="frow">
-            <span>Youth</span><span class="amt">₦2,000</span>
+            <span>Youth</span><span class="amt">₦3,000</span>
           </div>
           <div class="frow">
             <span>Children</span><span class="amt">₦1,500</span>
@@ -201,7 +209,13 @@
           <div class="snum" id="st-revenue">—</div>
           <div class="slbl">Revenue</div>
         </div>
-        <button class="fbtn" onclick="downloadCSV()" style="background:var(--g7);color:#fff;border-color:var(--g7)">↓ Download CSV</button>
+        <button
+          class="fbtn"
+          onclick="downloadCSV()"
+          style="background: var(--g7); color: #fff; border-color: var(--g7)"
+        >
+          ↓ Download CSV
+        </button>
       </div>
       <div class="frow2">
         <button class="fbtn active" onclick="setFilter('all', this)">
