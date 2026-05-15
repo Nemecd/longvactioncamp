@@ -5,7 +5,7 @@ const EJ_SVC = "service_yqxlth8";
 const EJ_TPL = "template_ge6fbmm";
 const EJ_KEY = "4Pfej9tJc7yGqsj1_";
 const PASS = "SUcamp2026";
-const FEES = { Adult: 2500, Youth: 2000, Children: 1500 };
+const FEES = { Adult: 3000, Youth: 3000, Children: 1500 };
 
 const sb = supabase.createClient(SB_URL, SB_KEY);
 emailjs.init({ publicKey: EJ_KEY });
@@ -17,21 +17,45 @@ let curFilter = "all",
 function fileSelect(inp) {
   const f = inp.files[0];
   if (!f) return;
+
   if (f.size > 5 * 1024 * 1024) {
-    alert("File too large. Max 5MB.");
+    alert2("reg-alert", "error", "File too large. Please upload under 5MB.");
     inp.value = "";
     return;
   }
+
   selFile = f;
+
+  // Show filename bar
   document.getElementById("pfname").textContent = f.name;
   document.getElementById("upprev").style.display = "flex";
-  document.querySelector(".upzone").style.background = "var(--g2)";
+
+  // Hide the upload zone, show preview area instead
+  document.getElementById("upzone").style.display = "none";
+
+  // If it's an image, show a preview
+  const imgWrap = document.getElementById("img-preview-wrap");
+  const imgEl = document.getElementById("img-preview");
+  if (f.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imgEl.src = e.target.result;
+      imgWrap.style.display = "block";
+    };
+    reader.readAsDataURL(f);
+  } else {
+    imgWrap.style.display = "none";
+  }
 }
-function rmFile() {
+
+function rmFile(e) {
+  if (e) e.stopPropagation();
   selFile = null;
   document.getElementById("pfile").value = "";
   document.getElementById("upprev").style.display = "none";
-  document.querySelector(".upzone").style.background = "var(--g1)";
+  document.getElementById("upzone").style.display = "block";
+  document.getElementById("img-preview-wrap").style.display = "none";
+  document.getElementById("img-preview").src = "";
 }
 function alert2(id, type, msg) {
   document.getElementById(id).innerHTML =
@@ -320,28 +344,63 @@ async function rejectReg(id) {
 }
 
 async function deleteReg(id) {
-  if (!confirm('Permanently delete this registration? This cannot be undone.')) return;
-  const { error } = await sb.from('registrations').delete().eq('id', id);
-  if (error) { alert2('admin-alert', 'error', 'Could not delete: ' + error.message); return; }
-  alert2('admin-alert', 'success', 'Registration deleted.');
-  setTimeout(() => clearA('admin-alert'), 4000);
+  if (!confirm("Permanently delete this registration? This cannot be undone."))
+    return;
+  const { error } = await sb.from("registrations").delete().eq("id", id);
+  if (error) {
+    alert2("admin-alert", "error", "Could not delete: " + error.message);
+    return;
+  }
+  alert2("admin-alert", "success", "Registration deleted.");
+  setTimeout(() => clearA("admin-alert"), 4000);
   await loadRegs();
 }
 
 function downloadCSV() {
-  if (!allRegs.length) { alert2('admin-alert', 'error', 'No records to download.'); return; }
-  const headers = ['Full Name','Gender','Phone','Email','Group','Category','Fee','School','Class','Guardian Name','Guardian Phone','Status','Date Registered'];
-  const rows = allRegs.map(r => [
-    r.full_name, r.gender, r.phone, r.email, r.group_name, r.category,
-    r.fee, r.school || '', r.class_level || '', r.guardian_name || '',
-    r.guardian_phone || '', r.status,
-    new Date(r.created_at).toLocaleString('en-NG')
-  ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(','));
-  const csv = [headers.join(','), ...rows].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
+  if (!allRegs.length) {
+    alert2("admin-alert", "error", "No records to download.");
+    return;
+  }
+  const headers = [
+    "Full Name",
+    "Gender",
+    "Phone",
+    "Email",
+    "Group",
+    "Category",
+    "Fee",
+    "School",
+    "Class",
+    "Guardian Name",
+    "Guardian Phone",
+    "Status",
+    "Date Registered",
+  ];
+  const rows = allRegs.map((r) =>
+    [
+      r.full_name,
+      r.gender,
+      r.phone,
+      r.email,
+      r.group_name,
+      r.category,
+      r.fee,
+      r.school || "",
+      r.class_level || "",
+      r.guardian_name || "",
+      r.guardian_phone || "",
+      r.status,
+      new Date(r.created_at).toLocaleString("en-NG"),
+    ]
+      .map((v) => `"${String(v).replace(/"/g, '""')}"`)
+      .join(","),
+  );
+  const csv = [headers.join(","), ...rows].join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'SU_Camp_2026_Registrations.csv';
-  a.click(); URL.revokeObjectURL(url);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "SU_Camp_2026_Registrations.csv";
+  a.click();
+  URL.revokeObjectURL(url);
 }
-
